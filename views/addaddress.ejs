@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Profile</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <style>
+    body {
+      background-color: #f8f9fa; /* Set a background color for the body */
+    }
+
+    .container {
+      margin-top: 50px; /* Adjust top margin for the container */
+    }
+
+    .row-eq-height {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    .sidebar {
+      background-color: #007bff; /* Change the color of the sidebar */
+      color: white; /* Set text color to white */
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .info-section {
+      background-color: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .sidebar a {
+        color: #fff; /* Set text color for the sidebar links */
+      }
+      .logout-btn {
+        margin-bottom: auto;
+      }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="row row-eq-height">
+
+    <!-- Sidebar -->
+    <div class="col-md-3 sidebar"> <!-- Add the sidebar class -->
+      <div class="text-center">
+        <h4 class="mt-3">User Name</h4>
+      </div>
+      <ul class="nav flex-column mt-4">
+        <li class="nav-item">
+          <a class="nav-link" href="/userprofile">Edit Profile</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/orders">Your Orders</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/wallet">Wallet</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/changepass">Change Password</a>
+        </li>
+      </ul>
+      <div class="logout-btn">
+        <button class="btn btn-danger btn-block">Logout</button>
+      </div>
+    </div>
+
+    <!-- User Information -->
+    <div class="col-md-8 info-section ml-1">
+      <form action="/addaddress" method="post" onsubmit="return validateForm()">
+        <h4 class="mb-3">Add New Address</h4>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="firstName">First Name</label>
+                <input type="text" class="form-control" id="firstName" name="firstName" placeholder="John" >
+                <div class="error-message" id="errorFirstName" style="color: rgb(215, 60, 60);"></div>
+            </div>
+            <div class="form-group col-md-6">
+                <label for="lastName">Last Name</label>
+                <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Doe" >
+                <div class="error-message" id="errorLastName" style="color: rgb(215, 60, 60);"></div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="address">Address</label>
+            <input type="text" class="form-control" id="address" name="address" placeholder="123 Street" >
+            <div class="error-message" id="errorAddress" style="color: rgb(215, 60, 60);"></div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="city">City</label>
+                <input type="text" class="form-control" id="city" name="city" placeholder="City" >
+                <div class="error-message" id="errorCity" style="color: rgb(215, 60, 60);"></div>
+            </div>
+            <div class="form-group col-md-4">
+                <label for="state">State</label>
+                <input type="text" class="form-control" id="state" name="state" placeholder="State" >
+                <div class="error-message" id="errorState" style="color: rgb(215, 60, 60);"></div>
+            </div>
+            <div class="form-group col-md-2">
+                <label for="pincode">Pin Code</label>
+                <input type="text" class="form-control" id="pincode" name="pincode" placeholder="123456" >
+                <div class="error-message" id="errorPincode" style="color: rgb(215, 60, 60);"></div>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Add Address</button>
+    </form>
+    </div>
+
+  </div>
+</div>
+<script>
+  function validateForm() {
+      var firstName = document.getElementById("firstName").value.trim();
+      var lastName = document.getElementById("lastName").value.trim();
+      var address = document.getElementById("address").value.trim();
+      var city = document.getElementById("city").value.trim();
+      var state = document.getElementById("state").value.trim();
+      var pincode = document.getElementById("pincode").value.trim();
+
+      // Clear previous error messages
+      clearErrorMessages();
+
+      // Check if any field is empty or contains only whitespace
+      if (firstName === "") {
+          displayErrorMessage("errorFirstName", "First Name is required.");
+          return false;
+      }
+
+      if (lastName === "") {
+          displayErrorMessage("errorLastName", "Last Name is required.");
+          return false;
+      }
+
+      if (address === "") {
+          displayErrorMessage("errorAddress", "Address is required.");
+          return false;
+      }
+
+      if (city === "") {
+          displayErrorMessage("errorCity", "City is required.");
+          return false;
+      }
+
+      if (state === "") {
+          displayErrorMessage("errorState", "State is required.");
+          return false;
+      }
+
+      // Check if pincode is a 6-digit number
+      if (!/^\d{6}$/.test(pincode)) {
+          displayErrorMessage("errorPincode", "Pincode must be a 6-digit number.");
+          return false;
+      }
+
+      // Check if other fields (except pincode) contain only characters
+      if (!/^[a-zA-Z\s]+$/.test(firstName)) {
+          displayErrorMessage("errorFirstName", "Only characters are allowed in First Name.");
+          return false;
+      }
+
+      if (!/^[a-zA-Z\s]+$/.test(lastName)) {
+          displayErrorMessage("errorLastName", "Only characters are allowed in Last Name.");
+          return false;
+      }
+
+      if (!/^[a-zA-Z\s]+$/.test(address)) {
+          displayErrorMessage("errorAddress", "Only characters are allowed in Address.");
+          return false;
+      }
+
+      if (!/^[a-zA-Z\s]+$/.test(city)) {
+          displayErrorMessage("errorCity", "Only characters are allowed in City.");
+          return false;
+      }
+
+      if (!/^[a-zA-Z\s]+$/.test(state)) {
+          displayErrorMessage("errorState", "Only characters are allowed in State.");
+          return false;
+      }
+
+      return true;
+  }
+
+  function displayErrorMessage(elementId, message) {
+      var errorDiv = document.getElementById(elementId);
+      errorDiv.innerHTML = message;
+  }
+
+  function clearErrorMessages() {
+      var errorDivs = document.querySelectorAll(".error-message");
+      errorDivs.forEach(function (div) {
+          div.innerHTML = "";
+      });
+  }
+</script>
+</body>
+</html>

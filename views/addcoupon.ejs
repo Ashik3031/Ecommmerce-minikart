@@ -1,0 +1,103 @@
+<!-- views/addCoupon.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <title>Add Coupon</title>
+  <style>
+    /* Add custom CSS styles if needed */
+    .coupon-form-container {
+      max-width: 400px;
+      margin: 50px auto;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+  </style>
+</head>
+<body>
+  <div class="container coupon-form-container">
+    <h1 class="mb-4">Add Coupon</h1>
+
+    <!-- Coupon Form -->
+    <form id="couponForm"  method="post">
+      <div class="form-group">
+        <label for="couponCode">Coupon Code</label>
+        <input type="text" class="form-control" id="coupencode" name="coupencode" required>
+      </div>
+      <div class="form-group">
+        <label for="couponDiscount">Discount (%)</label>
+        <input type="number" class="form-control" id="discount" name="discount" required>
+      </div>
+      <div class="form-group">
+        <label for="couponExpireDate">Expire Date</label>
+        <input type="date" class="form-control" id="expireDate" name="expireDate" required>
+      </div>
+      <div class="form-group">
+        <label for="couponPurchaseAmount">Purchase Amount</label>
+        <input type="number" class="form-control" id="purchaseAmount" name="purchaseamount" required>
+      </div>
+      <button type="button" onclick="checkCouponCode()">Submit</button>
+    </form>
+    
+    
+
+    <!-- Back to Coupon List Button -->
+    <a href="/coupons" class="btn btn-secondary mt-3">Back to Coupon List</a>
+
+    <div id="messageContainer" class="alert" role="alert"></div>
+  </div>
+
+  <script>
+    // Function to check if the coupon code already exists and if it's expired
+    function checkCouponCode() {
+      console.log("hello");
+      const couponCode = document.getElementById('coupencode').value;
+      const expireDate = document.getElementById('expireDate').value;
+  
+      // Check if the expiration date is in the future
+      if (new Date(expireDate) < new Date()) {
+        // Display message in HTML
+        document.getElementById('messageContainer').innerHTML = 'Coupon date has expired.';
+        return;
+      }
+  
+      // Fetch API to check if the coupon code exists
+      fetch('/checkcoupon', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ coupencode: couponCode }),
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(data => {
+        const messageContainer = document.getElementById('messageContainer');
+  
+        if (data.exists) {
+          // Display message in HTML
+          messageContainer.innerHTML = 'Coupon code already exists. Please choose a different one.';
+        } else {
+          // Continue with the form submission
+          window.location.href = '/addcoupon';
+          document.getElementById('couponForm').submit();
+        }
+      })
+      .catch(error => {
+        console.error('Error checking coupon code:', error);
+      });
+    }
+  </script>
+
+  <!-- Bootstrap JS and Popper.js (required for Bootstrap) -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

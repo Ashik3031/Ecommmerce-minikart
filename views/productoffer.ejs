@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order Detail</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <!-- Add any additional CSS styles if needed -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+  <!-- Custom CSS -->
+  <!-- Add your stylesheets, including Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+
+<%- include('adminnav') %>
+
+<div class="container mr-5 mt-1">
+    <div class="d-flex justify-content-between mb-3">
+      <h2>Offer Detail</h2>
+      <a href="/addprdoffer" class="btn btn-primary">Add prd Offer</a>
+      <a href="/addcatoffer" class="btn btn-primary">Add cat Offer</a>
+    </div>
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">All Offers</h5>
+      <% if (offers.length > 0) { %>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Discount</th>
+              <th>Start Date</th>
+              <th>End Date</th>
+              <th>Active</th>
+              <th>Applicable Products</th>
+              <th>Applicable Categories</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% offers.forEach(offer => { %>
+              <tr>
+                <td><%= offer.type %></td>
+                <td><%= offer.discount %></td>
+                <td><%- formatDate(offer.startDate) %></td>
+                <td> <%- formatDate(offer.endDate) %></td>
+                <td><%= offer.isActive ? 'Yes' : 'No' %></td>
+                <td><%= offer.applicableProducts.join(', ') %></td>
+                <td><%= offer.applicableCategories.join(', ') %></td>
+              </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      <% } else { %>
+        <p>No offers found.</p>
+      <% } %>
+    </div>
+  </div>
+  <% function formatDate(inputDate) { %>
+    <% const date = new Date(inputDate); %>
+    <% const day = String(date.getDate()).padStart(2, '0'); %>
+    <% const month = String(date.getMonth() + 1).padStart(2, '0'); %>
+    <% const year = String(date.getFullYear()).slice(-2); %>
+    <%= `${day}-${month}-${year}` %>
+  <% } %>
+
+  <!-- Add any additional sections for order details, if needed -->
+
+</div>
+
+<!-- Bootstrap JS and Popper.js links -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>

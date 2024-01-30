@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <title>Add Address</title>
+  <style>
+    /* Additional custom styles for the card */
+    .info-section {
+      background-color: #f8f9fa;
+      border: 1px solid #dee2e6;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+<body>
+  <%- include('headernav') %>
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card info-section">
+        <div class="card-body">
+          <form action="/checkaddAddress" method="post" onsubmit="return validateForm()">
+            <h4 class="mb-3">Add New Address</h4>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="firstName">First Name</label>
+                    <input type="text" class="form-control" id="firstName" name="firstName" placeholder="John" >
+                    <div class="error-message" id="errorFirstName" style="color: rgb(215, 60, 60);"></div>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="lastName">Last Name</label>
+                    <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Doe" >
+                    <div class="error-message" id="errorLastName" style="color: rgb(215, 60, 60);"></div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="address">Address</label>
+                <input type="text" class="form-control" id="address" name="address" placeholder="123 Street" >
+                <div class="error-message" id="errorAddress" style="color: rgb(215, 60, 60);"></div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="city">City</label>
+                    <input type="text" class="form-control" id="city" name="city" placeholder="City" >
+                    <div class="error-message" id="errorCity" style="color: rgb(215, 60, 60);"></div>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="state">State</label>
+                    <input type="text" class="form-control" id="state" name="state" placeholder="State" >
+                    <div class="error-message" id="errorState" style="color: rgb(215, 60, 60);"></div>
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="pincode">Pin Code</label>
+                    <input type="text" class="form-control" id="pincode" name="pincode" placeholder="123456" >
+                    <div class="error-message" id="errorPincode" style="color: rgb(215, 60, 60);"></div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Add Address</button>
+        </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+  function validateForm() {
+      var firstName = document.getElementById("firstName").value.trim();
+      var lastName = document.getElementById("lastName").value.trim();
+      var address = document.getElementById("address").value.trim();
+      var city = document.getElementById("city").value.trim();
+      var state = document.getElementById("state").value.trim();
+      var pincode = document.getElementById("pincode").value.trim();
+
+      // Clear previous error messages
+      clearErrorMessages();
+
+      // Check if any field is empty or contains only whitespace
+      if (firstName === "") {
+          displayErrorMessage("errorFirstName", "First Name is required.");
+          return false;
+      }
+
+      if (lastName === "") {
+          displayErrorMessage("errorLastName", "Last Name is required.");
+          return false;
+      }
+
+      if (address === "") {
+          displayErrorMessage("errorAddress", "Address is required.");
+          return false;
+      }
+
+      if (city === "") {
+          displayErrorMessage("errorCity", "City is required.");
+          return false;
+      }
+
+      if (state === "") {
+          displayErrorMessage("errorState", "State is required.");
+          return false;
+      }
+
+      // Check if pincode is a 6-digit number
+      if (!/^\d{6}$/.test(pincode)) {
+          displayErrorMessage("errorPincode", "Pincode must be a 6-digit number.");
+          return false;
+      }
+
+      // Check if other fields (except pincode) contain only characters
+      if (!/^[a-zA-Z\s]+$/.test(firstName)) {
+          displayErrorMessage("errorFirstName", "Only characters are allowed in First Name.");
+          return false;
+      }
+
+      if (!/^[a-zA-Z\s]+$/.test(lastName)) {
+          displayErrorMessage("errorLastName", "Only characters are allowed in Last Name.");
+          return false;
+      }
+
+      if (!/^[a-zA-Z\s]+$/.test(address)) {
+          displayErrorMessage("errorAddress", "Only characters are allowed in Address.");
+          return false;
+      }
+
+      if (!/^[a-zA-Z\s]+$/.test(city)) {
+          displayErrorMessage("errorCity", "Only characters are allowed in City.");
+          return false;
+      }
+
+      if (!/^[a-zA-Z\s]+$/.test(state)) {
+          displayErrorMessage("errorState", "Only characters are allowed in State.");
+          return false;
+      }
+
+      return true;
+  }
+
+  function displayErrorMessage(elementId, message) {
+      var errorDiv = document.getElementById(elementId);
+      errorDiv.innerHTML = message;
+  }
+
+  function clearErrorMessages() {
+      var errorDivs = document.querySelectorAll(".error-message");
+      errorDivs.forEach(function (div) {
+          div.innerHTML = "";
+      });
+  }
+</script>
+
+</body>
+</html>

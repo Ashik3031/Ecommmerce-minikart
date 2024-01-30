@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Admin Dashboard</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <!-- Custom CSS -->
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        #sidebar {
+            background: #343a40;
+            color: #ced4da;
+            height: 100%; 
+        }
+        #sidebar a {
+            color: #ced4da;
+        }
+       
+        .container-fluid {
+            height: 100%; /* Set the height to 100% */
+        }
+    </style>
+</head>
+<body>
+
+<div class="container-fluid">
+    <div class="row">
+        <%- include('adminnav') %>
+
+
+        <!-- Main Content -->
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h2">Dashboard</h1>
+            </div>
+
+            <!-- Dummy data for the dashboard -->
+            <div class="container">
+                <h1 class="mt-5">Admin User Management</h1>
+            
+                <table class="table mt-4">
+                  <thead>
+                    <tr>
+                      <th scope="col">No</th>
+                      <th scope="col">User Name</th>
+                      <th scope="col">Email</th>
+                      <th scope="col">Status</th>
+                      <th scope="col">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% users.forEach(function(user, index) { %>
+                        <tr>
+                            <th scope="row"><%= index + 1 %></th>
+                            <td><%= user.username %></td>
+                            <td><%= user.email %></td>
+                            <td>
+                                <%= user.status ? "Blocked" : "Active" %>
+                              </td>
+                              
+                            <td>
+                                <!-- Add action buttons here -->
+                               
+                                <a href="/admin/blockuser/<%= user._id %>">
+                                    <button class="btn btn-<%= user.status ? 'success' : 'danger' %>">
+                                      <%= user.status ? 'Unblock' : 'Block' %>
+                                    </button>
+                            </td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+                  
+                </table>
+
+                <!-- Pagination Controls -->
+                <nav aria-label="Page navigation" class="d-flex justify-content-center">
+                        <ul class="pagination">
+                        <% for (let i = 1; i <= totalPages; i++) { %>
+                            <li class="page-item <%= i === currentPage ? 'active' : '' %>">
+                            <a class="page-link" href="?page=<%= i %>"><%= i %></a>
+                            </li>
+                        <% } %>
+                        </ul>
+                    </nav>
+  
+              </div>
+            
+
+
+<!-- Bootstrap JS and dependencies -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>  

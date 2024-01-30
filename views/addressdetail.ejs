@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Profile</title>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha384-Z2H8NK6rPD7+Hpn8KkzBdTC5Qqy1FkI7uViF1nu3q7sFChFakCMp2VFBMm57Psfy" crossorigin="anonymous">
+  <style>
+    body {
+      background-color: #f8f9fa; /* Set a background color for the body */
+    }
+
+    .container {
+      margin-top: 50px; /* Adjust top margin for the container */
+    }
+
+    
+  </style>
+</head>
+<body>
+ 
+    <%- include('headernav') %>
+<div class="container">
+  
+    <div class="container mt-5">
+        <h2>User Addresses</h2>
+        <% address.forEach(address=> { %>
+            <div class="card mt-3">
+                <div class="card-body">
+                    <h5 class="card-title"><%= address.firstname %> <%= address.lastname %></h5>
+                    <p class="card-text"><strong>Address:</strong> <%= address.address %></p>
+                    <p class="card-text"><strong>City:</strong> <%= address.city %></p>
+                    <p class="card-text"><strong>State:</strong> <%= address.state %></p>
+                    <p class="card-text"><strong>Pincode:</strong> <%= address.pincode %></p>
+                    <a href='/editaddress/<%= address._id %>' class="btn btn-primary" onclick="openEditModal('<%= address._id %>')">Edit Address</a>
+                    <a href="/deleteaddress/<%= address._id %>" class="btn btn-danger ml-2" >Delete Address</a>
+                </div>
+            </div>
+            <% }); %>
+
+
+
+            
+  <!-- Include Bootstrap JS and other scripts -->
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+    <!-- Your custom script -->
+   
+   
+</body>
+
+
+<%- include('footer') %>

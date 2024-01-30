@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sales Report</title>
+  <!-- Add Bootstrap CSS link here -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+  <!-- Custom CSS -->
+</head>
+
+<body>
+
+  <!-- Include the Bootstrap container class for responsive layout -->
+  <div class="container-fluid">
+    <div class="container-fluid">
+      <div class="row">
+        <!-- Include the adminnav -->
+        <%- include('adminnav') %>
+        <!-- Main Content Area -->
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+          <div class="mt-5">
+            <h2>Orders</h2>
+
+            <!-- Your existing content... -->
+            <table class="table table-bordered mt-4">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>User name</th>
+                  <th>Address</th>
+                  <th>Total Quantity</th>
+                  <th>Payment Method</th>
+                  <th>Products</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% orders.forEach(order => { %>
+                  <% order.products.forEach(product => { %>
+                    <tr>
+                      <td><%= product.generateorderid %></td>
+                      <td><%= order.username %></td>
+                      <td><%= order.address.address %>,  <%= order.address.state %> </td>
+                      <td><%= order.totalQuantity %></td>
+                      <td><%= order.paymentMethod %></td>
+                      <td>
+                        <ul>
+                          <li><%= product.product %> </li>
+                        </ul>
+                      </td>
+                      <td>
+                        <form method="post" action="/admin/updateStatus/<%= order._id %>">
+                          <select name="statusAction" class="form-control">
+                           
+                            <option value="pending" <%= product.status === 'pending' ? 'selected' : '' %>>Pending</option>
+                            <option value="delivered" <%= product.status === 'delivered' ? 'selected' : '' %>>Delivered</option>
+                            <option value="Canceled" <%= product.status === 'Canceled' ? 'selected' : '' %>>Canceled</option>
+                            <option value="shipped" <%= product.status === 'shipped' ? 'selected' : '' %>>Shipped</option>
+
+                          </select>
+                      </td>
+                      <td><button type="submit" class="btn btn-info">Update</button></form></td>
+                    </tr>
+                  <% }); %>
+                <% }); %>
+              </tbody>
+            </table>
+          </div>
+        </main>
+      </div>
+    </div>
+    <nav aria-label="Page navigation" class="d-flex justify-content-center">
+      <ul class="pagination">
+      <% for (let i = 1; i <= totalPages; i++) { %>
+          <li class="page-item <%= i === currentPage ? 'active' : '' %>">
+          <a class="page-link" href="?page=<%= i %>"><%= i %></a>
+          </li>
+      <% } %>
+      </ul>
+  </nav>
+  </div>
+
+  <!-- Bootstrap JS and dependencies -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+
+</html>

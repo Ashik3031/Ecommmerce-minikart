@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Admin Dashboard</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <!-- Custom CSS -->
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        #sidebar {
+            background: #343a40;
+            color: #ced4da;
+            height: 100%; 
+        }
+        #sidebar a {
+            color: #ced4da;
+        }
+       
+        .container-fluid {
+            height: 100%; /* Set the height to 100% */  
+        }
+    </style>
+</head>
+<body>
+
+<div class="container-fluid">
+    <div class="row">
+        <%- include('adminnav') %>
+        <!-- Main Content -->
+        <div class="container mt-4 mr-5">
+            <h2>Product List</h2>
+            <a href="/admin/addproduct"><button class="btn btn-primary mb-3" data-toggle="modal" data-target="#addProductModal">Add Product</button></a>
+            <p><%= message%></p>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Product Name</th>
+                  <th>Category</th>
+                  <th>Price</th>
+                  <th>Stock</th>
+                  <th>Image</th>
+                  <th>Status</th>
+                  <th>List button</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% let productId = 1; %>
+                <% product.forEach(product => { %>
+                <tr>
+                    <td><%= productId++ %></td>
+                    <td><%= product.productName %></td>
+                    <td><%= product.category ? product.category.Name : 'N/A' %></td>
+                    <td><%= product.price %></td>
+                    <td><%= product.stock %></td>
+                    <td>
+                      <img src="<%= product.images.length > 0 ? product.images[0] : 'path/to/default/image.jpg' %>" alt="Product Image" class="img-thumbnail" style="height: 50px; width: 50px;">
+
+                    </td>
+                    <td><%= product.status %></td>
+                    <td>
+                        <a href="/admin/list/<%= product._id %>">
+                            <button class="btn btn-<%= product.status ? 'success' : 'danger' %>" onclick="confirmAction('<%= product._id %>', `<%= product.islisted %>`)">
+                                <%= product.status ? 'list' : 'UnList' %>
+                              </button>
+                    </a>
+                </td>
+                    <td>
+                        <a href="/admin/edit-prd/<%= product._id %>"><button type="button" class="btn btn-info btn-sm m-1" >Edit</button></a>
+                            <a href="/admin/delete-prd/<%= product._id %> " ><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteConfirmationModal" data-toggle="modal" data-target="#deleteConfirmationModal<%= product._id %>">
+                                Delete
+                            </button></a>
+                    </td>
+                </tr>
+                <% }); %>
+            </tbody>
+            </table>
+
+            <!-- Pagination Controls -->
+            <nav aria-label="Page navigation" class="d-flex justify-content-center">
+              <ul class="pagination">
+                <% for (let i = 1; i <= totalPages; i++) { %>
+                  <li class="page-item <%= i === currentPage ? 'active' : '' %>">
+                    <a class="page-link" href="?page=<%= i %>"><%= i %></a>
+                  </li>
+                <% } %>
+              </ul>
+            </nav>
+
+          </div>
+
+          <!-- Add Product Modal -->
+          <div class="modal fade" id="addProductModal" tabindex="-1" role="dialog" aria-labelledby="addProductModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="addProductModalLabel">Add Product</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <!-- Your form for adding a new product goes here -->
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-primary">Add Product</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+
+<!-- Bootstrap JS and dependencies -->
+<script>
+    function confirmAction(userId, isBlocked) {
+      var action = isBlocked ? 'Unblock' : 'Block';
+      var confirmationMessage = 'Are you sure you want to ' + action + ' this user?';
+  
+      // Create a modal
+      $('#confirmationModal').modal('show');
+      $('#confirmationMessage').text(confirmationMessage);
+  
+      // If the user clicks "Yes" in the modal, proceed with the action
+      $('#confirmButton').click(function () {
+        window.location.href = '/blockuser/' + userId;
+      });
+    }
+  </script>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

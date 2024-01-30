@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Admin Dashboard</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <!-- Custom CSS -->
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        #sidebar {
+            background: #343a40;
+            color: #ced4da;
+            height: 100%; 
+        }
+        #sidebar a {
+            color: #ced4da;
+        }
+       
+        .container-fluid {
+            height: 100%; /* Set the height to 100% */
+        }
+        .example_paginate{
+          display: none !important;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container-fluid">
+    <div class="row">
+      <%- include('adminnav') %>
+
+
+        <!-- Main Content -->
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h2">Dashboard</h1>
+            </div>
+
+            <div class="container mt-4">
+                <h2>Edit Category</h2>
+                <form  id="editCategoryForm" action="/admin/edit-cat/<%= categoery._id %>" method="post" onsubmit="return validateForm()">
+                    <div class="form-group">
+                      <label for="categoryName">Category Name:</label>
+                      <input type="text" class="form-control" id="categoryName" name="categoryName" value="<%= categoery.Name %>" required>
+                    </div>
+                    <div id="validationMessage" style="color: rgb(122, 36, 36); text-align: center; font-weight: bold;"></div>
+                
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                  </form>
+                </div>
+                <script>
+                  function validateForm() {
+                    var categoryName = document.getElementById("categoryName").value;
+                    var validationMessage = document.getElementById("validationMessage");
+                
+                    // Check if the input contains only white spaces
+                    if (categoryName.trim() === "") {
+                      validationMessage.innerHTML = "Category Name cannot be just white spaces";
+                      return false; // Prevent the form from submitting
+                    }
+                
+                    // You can add more validation logic here if needed
+                
+                    validationMessage.innerHTML = ""; // Clear the validation message
+                    return true; // Allow the form to submit
+                  }
+                
+                  document.getElementById("editCategoryForm").addEventListener("submit", async function(event) {
+                    event.preventDefault();
+                
+                    const categoryName = document.getElementById("categoryName").value;
+                    const validationMessage = document.getElementById("validationMessage");
+                
+                    const response = await fetch(`/admin/edit-cat/<%=categoery._id %>`, {
+                      method: "POST",
+                      headers: {
+                         "Content-Type": "application/json",
+                      },
+                      body: JSON.stringify({ categoryName }),
+                   });
+                   
+                
+                    const result = await response.json();
+                
+                    if (result.error) {
+                       validationMessage.innerHTML = result.error;
+                    } else {
+                       // Clear validation message and handle successful submission
+                       validationMessage.innerHTML = "";
+                       // Handle any success logic or redirection here
+                    }
+                    if(result.success){
+                      window.location.href=result.redirect
+                    }
+                 });
+                </script>
+                <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+                <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+                <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+                
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

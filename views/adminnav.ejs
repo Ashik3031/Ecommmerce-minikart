@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <!-- Add your CSS styles or link to an external stylesheet here -->
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+        }
+
+        #sidebar {
+            height: 100vh;
+            width: 250px;
+            background-color: #eeeded; /* Off-White */
+            color: #2c3e50; /* Dark Blue-Gray */
+            position: fixed;
+            overflow-x: hidden;
+            padding-top: 20px;
+        }
+
+        #sidebar ul {
+            list-style: none; /* Remove bullets from the list */
+            padding: 4px;
+        }
+
+        #sidebar a {
+            padding: 15px 10px;
+            text-decoration: none;
+            font-size: 18px;
+            color: #2c3e50; /* Dark Blue-Gray */
+            display: block;
+            transition: 0.3s;
+        }
+
+        #sidebar a:hover {
+            background-color: #f0de36; /* Yellowish */
+            color: #2c3e50; /* Dark Blue-Gray */
+        }
+
+        #content {
+            margin-left: 250px;
+            padding: 16px;
+        }
+
+       
+       
+    </style>
+</head>
+<body>
+
+    <div id="sidebar">
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link active" href="/admin/admindashboard">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/admin/usermangement">
+                    <i class="fas fa-users"></i> Users
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/admin/cat-mng">
+                    <i class="fas fa-folder"></i> Categorys
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/admin/product-mng">
+                    <i class="fas fa-shopping-bag"></i>Products
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/admin/salesreport">
+                    <i class="fas fa-chart-bar"></i> Sales
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/offers">
+                    <i class="fas fa-box"></i> offers
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/admin/ordersmang">
+                    <i class="fas fa-shopping-cart"></i> Orders
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/coupons">
+                    <i class="fas fa-tags"></i> Coupons
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/admin/banner">
+                    <i class="fas fa-tags"></i> Banner
+                </a>
+            </li>
+            <div id="logout">
+                <a class="nav-link" href="/admin/logout">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            </div>
+        </ul>
+    </div>
+
+   
+</body>
+</html>

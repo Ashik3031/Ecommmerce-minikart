@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Admin Dashboard</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <!-- Custom CSS -->
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        #sidebar {
+            background: #343a40;
+            color: #ced4da;
+            height: 100%; 
+        }
+        #sidebar a {
+            color: #ced4da;
+        }
+       
+        .container-fluid {
+            height: 100%; /* Set the height to 100% */
+        }
+        .vertical-images-container {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+      }
+  
+      .existing-image {
+          margin-bottom: 10px; /* Add margin between images */
+      }
+    </style>
+</head>
+<body>
+
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar -->
+        <%- include('adminnav') %>
+
+        <div class="container mt-4 mr-5">
+          <h2>Edit Product</h2>
+          <form action="/admin/edit-prd/<%= product._id %>" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
+              <!-- Product Name -->
+              <div class="form-group">
+                  <label for="productName">Product Name:</label>
+                  <input type="text" class="form-control" id="productName" name="productName" value="<%= product.productName %>">
+                  <div class="error-message" id="productNameError"></div>
+              </div>
+      
+              <!-- Category Dropdown -->
+              <div class="form-group">
+                  <label for="category">Category:</label>
+                  <select class="form-control" id="category" name="category">
+                      <% categories.forEach(category => { %>
+                      <option <% if(category._id.toString() === product.category.toString()) { %> selected <% } %> value="<%= category._id %>">
+                          <%= category.Name %>
+                      </option>
+                      <% }); %>
+                  </select>
+                  <div class="error-message" id="categoryError"></div>
+              </div>
+      
+              <!-- Price -->
+              <div class="form-group">
+                  <label for="price">Price:</label>
+                  <input type="number" class="form-control" id="price" name="price" value="<%= product.price %>">
+                  <div class="error-message" id="priceError"></div>
+              </div>
+      
+              <!-- Stock -->
+              <div class="form-group">
+                  <label for="stock">Stock:</label>
+                  <input type="number" class="form-control" id="stock" name="stock" value="<%= product.stock %>">
+                  <div class="error-message" id="stockError"></div>
+              </div>
+      
+              <!-- Rating -->
+              <div class="form-group">
+                  <label for="rating">Rating:</label>
+                  <input type="number" class="form-control" id="rating" name="rating" value="<%= product.rating %>" step="0.1">
+                  <div class="error-message" id="ratingError"></div>
+              </div>
+      
+              <!-- Model -->
+              <div class="form-group">
+                  <label for="model">Model:</label>
+                  <input type="text" class="form-control" id="model" name="model" value="<%= product.model %>">
+                  <div class="error-message" id="modelError"></div>
+              </div>
+      
+              <!-- Description -->
+              <div class="form-group">
+                  <label for="description">Description:</label>
+                  <textarea class="form-control" id="description" name="description" rows="4"><%= product.description %></textarea>
+                  <div class="error-message" id="descriptionError"></div>
+              </div>
+      
+              <!-- Existing Images -->
+              <div class="form-group">
+                  <label for="existingImages">Existing Images:</label>
+                  <div id="existingImages">
+                      <% product.images.forEach((image, index) => { %>
+                      <div class="existing-image" class="vertical-images-container">
+                          <img src="<%= image %>" alt="Existing Image" style="height: 100px;">
+                          <button type="button" class="remove-image-btn" data-image-index="<%= index %>">Remove</button>
+                      </div>
+                      <% }); %>
+                  </div>
+              </div>
+      
+              <!-- Upload Image -->
+              <div class="form-group">
+                <label for="image">Upload Image:</label>
+                <input type="file" class="form-control-file" id="image" name="images" onchange="displaySelectedImage(this)" multiple>
+                <div class="error-message" id="imagesError"></div>
+            </div>
+            
+            <div id="selectedImageContainer" class="mt-3">
+                <label for="selectedImage">Images:</label>
+                <img id="selectedImage" style="max-height: 100px;">
+            </div>
+      
+              <!-- Go Back Button -->
+              <a href="/admin/product-mng" class="btn btn-secondary">Go Back</a>
+      
+              <div id="validationMessage" style="color: rgb(122, 36, 36); text-align: center; font-weight: bold;"></div>
+      
+              <!-- Submit Button -->
+              <button type="submit" class="btn btn-primary">Submit</button>
+          </form>
+      </div>
+      
+      <script>
+          document.addEventListener('DOMContentLoaded', function () {
+              const removeImageBtns = document.querySelectorAll('.remove-image-btn');
+      
+              removeImageBtns.forEach(btn => {
+                  btn.addEventListener('click', async function () {
+                      console.log('Remove button clicked');
+      
+                      const imageToRemove = this.getAttribute('data-image-index');
+                      const productId = '<%= product._id %>';
+      
+                      console.log('Removing image:', imageToRemove);
+      
+                      try {
+                          const response = await fetch(`/remove-image/${productId}`, {
+                              method: 'POST',
+                              headers: {
+                                  'Content-Type': 'application/json',
+                              },
+                              body: JSON.stringify({ imageName: imageToRemove }),
+                          });
+      
+                          if (response.ok) {
+                              console.log('Image removed successfully');
+                              // Update the UI to reflect the removed image
+                              // (e.g., remove the corresponding HTML element)
+                              this.parentNode.remove(); // Remove the parent div containing the image and button
+                          } else {
+                              console.error('Failed to remove image');
+                          }
+                      } catch (error) {
+                          console.error(error);
+                      }
+                  });
+              });
+          });
+      
+          function validateForm() {
+              var productName = document.getElementById("productName").value;
+              var category = document.getElementById("category").value;
+              var price = document.getElementById("price").value;
+              var stock = document.getElementById("stock").value;
+              var rating = document.getElementById("rating").value;
+              var model = document.getElementById("model").value;
+              var description = document.getElementById("description").value;
+              var images = document.getElementById("image").value;
+              var validationMessage = document.getElementById("validationMessage");
+      
+              // Clear previous error messages
+              document.querySelectorAll('.error-message').forEach(function (el) {
+                  el.innerHTML = "";
+              });
+      
+              // Validate Product Name
+              if (!productName || productName.length < 2) {
+                  document.getElementById("productNameError").innerHTML = "Please enter a valid Product Name (at least 2 characters).";
+                  return false;
+              }
+      
+              // Validate Category
+              if (!category) {
+                  document.getElementById("categoryError").innerHTML = "Please select a Category.";
+                  return false;
+              }
+      
+              // Validate Price
+              if (isNaN(price) || price < 0) {
+                  document.getElementById("priceError").innerHTML = "Please enter a valid Price (non-negative numeric value).";
+                  return false;
+              }
+      
+              // Validate Stock
+              if (isNaN(stock) || stock < 0) {
+                  document.getElementById("stockError").innerHTML = "Please enter a valid Stock (non-negative numeric value).";
+                  return false;
+              }
+      
+              // Validate Rating
+              if (isNaN(rating) || rating < 0 || rating > 5) {
+                  document.getElementById("ratingError").innerHTML = "Please enter a valid Rating (numeric value between 0 and 5).";
+                  return false;
+              }
+      
+              // Validate Model
+              if (!model) {
+                  document.getElementById("modelError").innerHTML = "Please enter a valid Model.";
+                  return false;
+              }
+      
+              // Validate Description
+              if (!description) {
+                  document.getElementById("descriptionError").innerHTML = "Please enter a valid Description.";
+                  return false;
+              }
+      
+              // Validate Images
+              
+      
+              // If all validations pass, return true to submit the form
+              return true;
+          }
+
+          function displaySelectedImage(input) {
+            var selectedImageContainer = document.getElementById("selectedImageContainer");
+            var selectedImage = document.getElementById("selectedImage");
+    
+            // Clear previous error messages
+            document.getElementById("imagesError").innerHTML = "";
+    
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+    
+                reader.onload = function (e) {
+                    selectedImage.src = e.target.result;
+                    selectedImageContainer.style.display = "block";
+                };
+    
+                reader.readAsDataURL(input.files[0]);
+            } else {
+                selectedImage.src = "";
+                selectedImageContainer.style.display = "none";
+            }
+        }
+      </script>
+      
+<!-- Bootstrap JS and Popper.js CDN -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+</body>
+</html>

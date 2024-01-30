@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Add your head content, including meta tags, stylesheets, etc. -->
+  <title>Your Coupon Page</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+  <!-- Custom CSS -->
+  <!-- Add your stylesheets, including Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<style>
+  .coupon-card {
+    margin-bottom: 20px; /* Adjust as needed to add space between cards */
+  }
+ 
+</style>
+
+<body>
+
+  <!-- Navigation Bar -->
+  
+
+  <div class="container-fluid">
+    <div class="row">
+
+      <!-- Sidebar (Navigation) -->
+      <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+        <!-- Add your sidebar content, if any -->
+        <%- include('adminnav') %>
+      </nav>
+
+      <!-- Main Content -->
+      <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+        <div class="container mt-4">
+          <h1>Coupon Detail</h1>
+          <!-- Add Coupon Button -->
+          <a href="/addcoupon" class="btn btn-primary mt-3" style="margin: 10px;">Add coupon</a>
+          
+          <!-- Coupon Details -->
+          
+          <div class="row">
+            <% coupons.forEach(coupon => { %>
+              <div class="col-sm-6">
+                <div class="card coupon-card">
+                  <div class="card-body">
+                    <h5 class="card-title">Coupon Code: <%= coupon.coupencode %></h5>
+                    <p class="card-text">Amount: <%= coupon.purchaseamount %></p>
+                    <p class="card-text">Discount: <%= coupon.discount %></p>
+                    <p class="card-text">Expire Date: <%- formatDate(coupon.expiredate) %>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            <% }); %>
+            <% function formatDate(inputDate) { %>
+              <% const date = new Date(inputDate); %>
+              <% const day = String(date.getDate()).padStart(2, '0'); %>
+              <% const month = String(date.getMonth() + 1).padStart(2, '0'); %>
+              <% const year = String(date.getFullYear()).slice(-2); %>
+              <%= `${day}-${month}-${year}` %>
+            <% } %>
+            
+           
+            
+          </div>
+        </div>
+      </main>
+    </div>
+      <nav aria-label="Page navigation" class="d-flex justify-content-center">
+        <ul class="pagination">
+          <% for (let i = 1; i <= totalPages; i++) { %>
+            <li class="page-item <%= i === currentPage ? 'active' : '' %>">
+              <a class="page-link" href="?page=<%= i %>"><%= i %></a>
+            </li>
+          <% } %>
+        </ul>
+      </nav>
+    
+  </div>
+
+  
+
+  <!-- Bootstrap JS and Popper.js (required for Bootstrap) -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

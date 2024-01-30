@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Profile</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <style>
+    body {
+      background-color: #f8f9fa; /* Set a background color for the body */
+    }
+
+    .container {
+      margin-top: 50px; /* Adjust top margin for the container */
+    }
+
+    .row-eq-height {
+      display: flex;
+      flex-wrap: wrap;
+    } 
+
+    .sidebar {
+      background-color: #007bff; /* Change the color of the sidebar */
+      color: white; /* Set text color to white */
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .info-section {
+      background-color: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .sidebar a {
+        color: #fff; /* Set text color for the sidebar links */
+      }
+      .logout-btn {
+        margin-bottom: auto;
+      }
+  </style>
+</head>
+<body>
+
+  <%- include('headernav') %>
+
+<div class="container">
+  <div class="row row-eq-height">
+
+    <!-- User Information -->
+    <div class="col-md-8 info-section ml-4">
+        <h2>Wallet Details</h2>
+        <p><strong>Your Balance:</strong> <%= user.wallet%></p>
+        <p><strong>Amount Used:</strong> $00.00</p>
+       
+          <div id="walletHistory">
+            <h3>Wallet History</h3>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Amount</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% wallett.forEach(entry=> { %>
+                  <tr>
+                    <td><%= entry.date %></td>
+                    <td><%= entry.amount %></td>
+                    <td><%= entry.creditordebit %></td>
+                    <!-- Add more columns if needed -->
+                  </tr>
+                <% }) %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+   </div>
+</div>
+
+</body>
+</html>

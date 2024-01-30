@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Admin Login</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #ffffff; /* White background */
+        }
+
+        .login-container {
+            max-width: 400px;
+            margin: auto;
+            margin-top: 100px;
+        }
+
+        .login-form {
+            background-color: #000000; /* Black theme */
+            color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .login-form label {
+            font-weight: bold;
+        }
+
+        .login-form .btn-primary {
+            background-color: #ffffff; /* White button */
+            color: #000000;
+            border: none;
+        }
+
+        .login-form .btn-primary:hover {
+            background-color: #e5e5e5; /* Light gray on hover */
+        }
+    </style>
+</head>
+<body>
+
+<div class="container login-container">
+    <div class="login-form">
+        <h2 class="text-center mb-4">Admin Login</h2>
+        <form action="/admin/adminlog" method="post" onsubmit="return validateForm()">
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" class="form-control" id="username" name="username" placeholder="Enter your username">
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" class="form-control" id="password"  name="password" placeholder="Enter your password">
+            </div>
+            
+            <button type="submit" class="btn btn-primary btn-block">Submit</button>
+            
+        </form>
+        <p id="error-message" style="color: red;" ><%= message%></p>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var form = document.querySelector('.login-form');
+        form.addEventListener('submit', function (event) {
+            var usernameInput = document.getElementById('username');
+            var passwordInput = document.getElementById('password');
+
+            var usernameValue = usernameInput.value.trim(); // Trim leading and trailing whitespaces
+            var passwordValue = passwordInput.value.trim(); // Trim leading and trailing whitespaces
+
+            if (usernameValue === '' || /^\s*$/.test(usernameValue) || passwordValue === '' || /^\s*$/.test(passwordValue)) {
+                alert('Username and password cannot be empty or contain only whitespaces');
+                event.preventDefault(); // Prevent form submission
+            }
+        });
+    });
+
+
+   
+    
+</script>
+
+<!-- Bootstrap JS and dependencies -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+</body>
+</html>

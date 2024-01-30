@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sales Report</title>
+  <!-- Add Bootstrap CSS link here -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+   <!-- Bootstrap CSS -->
+   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+   <!-- Font Awesome -->
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+   <!-- Custom CSS -->
+</head>
+<body>
+
+<%- include('adminnav') %>
+
+<div class="container mr-5 mt-1">
+  <h2 class="mb-4">Sales Report</h2>
+
+  <% if (orders.length > 0) { %>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>User ID</th>
+          <th>Order ID</th>
+          <th>Total Quantity</th>
+          <th>Total Price</th>
+          <th>Product</th>
+          <th>Payment Method</th>
+          <th>Order Date</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% orders.forEach(order => { %>
+          <tr>
+            <td><%= order.userId %></td>
+            <td><%= order.products[0].generateorderid %></td>
+            <td><%= order.totalQuantity %></td>
+            <td><%= order.totalPrice %></td>
+            <td>
+              <% order.products.forEach(product => { %>
+                <%= product.product %><br>
+              <% }); %>
+            </td>
+            <td><%= order.paymentMethod %></td>
+            <td><%= order.orderDate.toDateString() %></td>
+            <td><%= order.products[0].status %></td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  <% } else { %>
+    <p>No orders found.</p>
+  <% } %>
+
+  <!-- Pagination Controls -->
+<nav aria-label="Page navigation" class="d-flex justify-content-center">
+    <ul class="pagination">
+      <% for (let i = 1; i <= totalPages; i++) { %>
+        <li class="page-item <%= i === currentPage ? 'active' : '' %>">
+          <a class="page-link" href="?page=<%= i %>"><%= i %></a>
+        </li>
+      <% } %>
+    </ul>
+  </nav>
+  
+</div>
+
+<!-- Add Bootstrap JS and Popper.js links here -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Profile</title>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha384-Z2H8NK6rPD7+Hpn8KkzBdTC5Qqy1FkI7uViF1nu3q7sFChFakCMp2VFBMm57Psfy" crossorigin="anonymous">
+  <style>
+    body {
+      background-color: #f8f9fa; /* Set a background color for the body */
+    }
+
+    .container {
+      margin-top: 50px; /* Adjust top margin for the container */
+    }
+
+    
+  </style>
+</head>
+<body>
+ 
+    <%- include('headernav') %>
+<div class="container">
+  
+    <div class="container mt-5">
+        <h2>Edit Address</h2>
+        <form id="updateAddressForm" action="/updateAddress/<%= address._id %>" method="POST" onsubmit="return validateForm()">
+          <div class="form-group">
+              <label for="editFirstName">First Name:</label>
+              <input type="text" class="form-control" id="editFirstName" name="editFirstName" value="<%= address.firstname %>" >
+              <div class="error-message" id="errorFirstName" style="color: rgb(215, 60, 60);"></div>
+          </div>
+      
+          <div class="form-group">
+              <label for="editLastName">Last Name:</label>
+              <input type="text" class="form-control" id="editLastName" name="editLastName" value="<%= address.lastname %>" >
+              <div class="error-message" id="errorLastName" style="color: rgb(215, 60, 60);"></div>
+          </div>
+      
+          <div class="form-group">
+              <label for="editAddress">Address:</label>
+              <input type="text" class="form-control" id="editAddress" name="editAddress" value="<%= address.address %>" >
+              <div class="error-message" id="errorAddress" style="color: rgb(215, 60, 60);"></div>
+          </div>
+      
+          <div class="form-group">
+              <label for="editCity">City:</label>
+              <input type="text" class="form-control" id="editCity" name="editCity" value="<%= address.city %>" >
+              <div class="error-message" id="errorCity" style="color: rgb(215, 60, 60);"></div>
+          </div>
+      
+          <div class="form-group">
+              <label for="editState">State:</label>
+              <input type="text" class="form-control" id="editState" name="editState" value="<%= address.state %>" >
+              <div class="error-message" id="errorState" style="color: rgb(215, 60, 60);"></div>
+          </div>
+      
+          <div class="form-group">
+              <label for="editPincode">Pincode:</label>
+              <input type="number" class="form-control" id="editPincode" name="editPincode" value="<%= address.pincode %>" >
+              <div class="error-message" id="errorPincode" style="color: rgb(215, 60, 60);"></div>
+          </div>
+      
+          <button type="submit" class="btn btn-primary">Save Changes</button>
+      </form>
+    </div>
+
+
+
+            
+  <!-- Include Bootstrap JS and other scripts -->
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+    <!-- Your custom script -->
+
+    <script>
+      function validateForm() {
+          var firstName = document.getElementById("editFirstName").value.trim();
+          var lastName = document.getElementById("editLastName").value.trim();
+          var address = document.getElementById("editAddress").value.trim();
+          var city = document.getElementById("editCity").value.trim();
+          var state = document.getElementById("editState").value.trim();
+          var pincode = document.getElementById("editPincode").value.trim();
+  
+          // Clear previous error messages
+          clearErrorMessages();
+  
+          // Check if any field is empty or contains only whitespace
+          if (firstName === "") {
+              displayErrorMessage("errorFirstName", "First Name is required.");
+              return false;
+          }
+  
+          if (lastName === "") {
+              displayErrorMessage("errorLastName", "Last Name is required.");
+              return false;
+          }
+  
+          if (address === "") {
+              displayErrorMessage("errorAddress", "Address is required.");
+              return false;
+          }
+  
+          if (city === "") {
+              displayErrorMessage("errorCity", "City is required.");
+              return false;
+          }
+  
+          if (state === "") {
+              displayErrorMessage("errorState", "State is required.");
+              return false;
+          }
+  
+          // Check if pincode is a 6-digit number
+          if (!/^\d{6}$/.test(pincode)) {
+              displayErrorMessage("errorPincode", "Pincode must be a 6-digit number.");
+              return false;
+          }
+  
+          // Check if other fields (except pincode) contain only characters
+          if (!/^[a-zA-Z\s]+$/.test(firstName)) {
+              displayErrorMessage("errorFirstName", "Only characters are allowed in First Name.");
+              return false;
+          }
+  
+          if (!/^[a-zA-Z\s]+$/.test(lastName)) {
+              displayErrorMessage("errorLastName", "Only characters are allowed in Last Name.");
+              return false;
+          }
+  
+          if (!/^[a-zA-Z\s]+$/.test(address)) {
+              displayErrorMessage("errorAddress", "Only characters are allowed in Address.");
+              return false;
+          }
+  
+          if (!/^[a-zA-Z\s]+$/.test(city)) {
+              displayErrorMessage("errorCity", "Only characters are allowed in City.");
+              return false;
+          }
+  
+          if (!/^[a-zA-Z\s]+$/.test(state)) {
+              displayErrorMessage("errorState", "Only characters are allowed in State.");
+              return false;
+          }
+  
+          return true;
+      }
+  
+      function displayErrorMessage(elementId, message) {
+          var errorDiv = document.getElementById(elementId);
+          errorDiv.innerHTML = message;
+      }
+  
+      function clearErrorMessages() {
+          var errorDivs = document.querySelectorAll(".error-message");
+          errorDivs.forEach(function (div) {
+              div.innerHTML = "";
+          });
+      }
+  </script>
+   
+</body>
+
+
+<%- include('footer') %>
