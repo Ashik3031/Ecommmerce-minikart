@@ -26,19 +26,27 @@
   
     <div class="container mt-5">
         <h2>User Addresses</h2>
-        <% address.forEach(address=> { %>
-            <div class="card mt-3">
-                <div class="card-body">
-                    <h5 class="card-title"><%= address.firstname %> <%= address.lastname %></h5>
-                    <p class="card-text"><strong>Address:</strong> <%= address.address %></p>
-                    <p class="card-text"><strong>City:</strong> <%= address.city %></p>
-                    <p class="card-text"><strong>State:</strong> <%= address.state %></p>
-                    <p class="card-text"><strong>Pincode:</strong> <%= address.pincode %></p>
-                    <a href='/editaddress/<%= address._id %>' class="btn btn-primary" onclick="openEditModal('<%= address._id %>')">Edit Address</a>
-                    <a href="/deleteaddress/<%= address._id %>" class="btn btn-danger ml-2" >Delete Address</a>
-                </div>
-            </div>
-            <% }); %>
+        <% if (address.length === 0) { %>
+          <div class="card mt-3">
+              <div class="card-body">
+                  <p class="card-text">No addresses found. <a href="/addaddress" class="btn btn-primary">Add Address</a></p>
+              </div>
+          </div>
+      <% } else { %>
+          <% address.forEach(address => { %>
+              <div class="card mt-3">
+                  <div class="card-body">
+                      <h5 class="card-title"><%= address.firstname %> <%= address.lastname %></h5>
+                      <p class="card-text"><strong>Address:</strong> <%= address.address %></p>
+                      <p class="card-text"><strong>City:</strong> <%= address.city %></p>
+                      <p class="card-text"><strong>State:</strong> <%= address.state %></p>
+                      <p class="card-text"><strong>Pincode:</strong> <%= address.pincode %></p>
+                      <a href='/editaddress/<%= address._id %>' class="btn btn-primary" onclick="openEditModal('<%= address._id %>')">Edit Address</a>
+                      <a href="/deleteaddress/<%= address._id %>" class="btn btn-danger ml-2">Delete Address</a>
+                  </div>
+              </div>
+          <% }); %>
+      <% } %>
 
 
 

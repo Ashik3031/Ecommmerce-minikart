@@ -135,22 +135,7 @@ exports.changepass = async(req,res)=>{
   };
   
   
-  // exports.updateprofile = async (req, res) => {
-  //   try {
-  //     const userId = req.session.user; // Retrieve the user id from the session
   
-  //     // Get the file path from the uploaded file
-  //     const imagePath = req.file ? req.file.path : null;
-  
-  //     // Update the image path in the database
-  //   const ashik=  await userProfile.insertOne({ userid: userId }, { $set: { image: imagePath } });
-      
-  //     res.redirect('/userprofile'); 
-  //   } catch (error) {
-  //     console.error(error);
-  //     res.status(500).json({ message: 'Internal Server Error' });
-  //   }
-  // };
   
 
   //address
