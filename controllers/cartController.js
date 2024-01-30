@@ -58,7 +58,7 @@ exports.cart = async (req, res) => {
   
       const categoery = await cartcollection.find()
       const user = await usercollection.find({_id: user_id})
-      res.render("Cart", {
+      res.render("cart", {
         cartItems,
         userName,
         userid: user_id,

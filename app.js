@@ -59,20 +59,20 @@ app.use('/',offerRouter)
 app.use('/admin',adminRouter)
 app.use('/admin',bannerRouter)
 
-// app.use((req, res, next) => {
-//     const error = new Error('Not Found');
-//     error.status = 404;
-//     next(error);
-// });
+app.use((req, res, next) => {
+    const error = new Error('Not Found');
+    error.status = 404;
+    next(error);
+});
 
-// app.use((err, req, res, next) => {
-//     if (err.status === 404) {
-//         res.status(404).render('error404'); // Assuming you have an error404.ejs file in your 'views' folder
-//     } else {
-//         console.error(err.stack);
-//         res.status(500).render('error500'); // Assuming you have an error500.ejs file in your 'views' folder
-//     }
-// });
+app.use((err, req, res, next) => {
+    if (err.status === 404) {
+        res.status(404).render('error404'); // Assuming you have an error404.ejs file in your 'views' folder
+    } else {
+        console.error(err.stack);
+        res.status(500).render('error500'); // Assuming you have an error500.ejs file in your 'views' folder
+    }
+});
 
 app.listen(port,()=>{
     console.log('http://localhost:3000')
