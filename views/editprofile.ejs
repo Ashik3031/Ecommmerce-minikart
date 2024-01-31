@@ -58,6 +58,9 @@
           <a class="nav-link" href="/orders">Your Orders</a>
         </li>
         <li class="nav-item">
+          <a class="nav-link" href="/addressdetail">Add/Edit Address</a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link" href="/wallet">Wallet</a>
         </li>
         <li class="nav-item">
@@ -73,25 +76,54 @@
     <div class="col-md-8 info-section ml-1">
         <div class="col-md-8 info-section ml-1">
             <h2>Edit Profile</h2>
-            <form action="/updateprofile/<%= user._id%>" method="POST" >
+            <form action="/updateprofile" method="POST" onsubmit="return validateForm()">
               <!-- Upload Profile Image -->
-              
-            
+          
               <!-- Update User Name -->
               <div class="form-group">
-                <label for="username">User Name</label>
-                <input type="text" class="form-control" id="username" name="username" value="<%= user.username %>" required>
+                  <label for="username">User Name</label>
+                  <input type="text" class="form-control" id="username" name="username" value="<%= user.username %>" >
+                  <!-- Add a span element for displaying the error message -->
+                  <span id="usernameError" class="error-message" style="color: rgb(208, 28, 28);"></span>
               </div>
           
               <!-- Update Profile Button -->
               <button type="submit" class="btn btn-primary">Update Profile</button>
-            </form>
-          </div>
+          </form>
           
-    </div>
-
-  </div>
-</div>
+          <script>
+              function validateForm() {
+                  // Get the input value
+                  var username = document.getElementById('username').value.trim();
+          
+                  // Get the error message element
+                  var usernameError = document.getElementById('usernameError');
+          
+                  // Reset previous error messages
+                  usernameError.innerHTML = '';
+          
+                  // Check if the username is empty
+                  if (username === '') {
+                      usernameError.innerHTML = 'User Name is required.';
+                      return false;
+                  }
+          
+                  // Check if the username consists of only whitespace
+                  if (!/\S/.test(username)) {
+                      usernameError.innerHTML = 'User Name cannot be only whitespace.';
+                      return false;
+                  }
+          
+                  // Check if the username contains only characters
+                  if (!/^[a-zA-Z]+$/.test(username)) {
+                      usernameError.innerHTML = 'User Name must contain only characters.';
+                      return false;
+                  }
+          
+                  // If all validations pass, the form will be submitted
+                  return true;
+              }
+          </script>
 
 </body>
 <script>
