@@ -15,13 +15,10 @@ const mongoose = require('mongoose')
 require("dotenv").config();
 const app = express()
 
-const mongostr = "mongodb+srv://ashikash202:efXiHewjVAtXqUYg@cluster0.ugzjjni.mongodb.net/UserregDb?retryWrites=true&w=majority"
+const mongostr ="mongodb+srv://ashikash202:efXiHewjVAtXqUYg@cluster0.ugzjjni.mongodb.net/UserregDb?retryWrites=true&w=majority"
 
 
-mongoose.connect(mongostr, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-})
+mongoose.connect(mongostr)
     .then(() => {
         console.log("mongo connected");
     }).catch((error) => {
