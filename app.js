@@ -15,7 +15,7 @@ const mongoose = require('mongoose')
 require("dotenv").config();
 const app = express()
 
-const mongostr = process.env.MONGO
+const mongostr = "mongodb+srv://ashikash202:efXiHewjVAtXqUYg@cluster0.ugzjjni.mongodb.net/UserregDb?retryWrites=true&w=majority"
 
 
 mongoose.connect(mongostr, {
@@ -45,7 +45,7 @@ app.use(session({
     resave: false,
     saveUninitialized: true
   }))
-
+   
 
 
 const port = process.env.PORT||3000
